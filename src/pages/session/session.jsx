@@ -15,10 +15,10 @@ const Session = () => {
                 <div className="bg-gradient-to-r from-[#72BF78] to-[#5da863] p-6">
                     <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6'>
                         <h1 className="text-2xl font-bold text-white mb-4 sm:mb-0">Your Sessions</h1>
-                        <button className='flex items-center py-2 px-4 bg-white text-[#72BF78] rounded-full font-semibold transition-all duration-300 hover:bg-gray-100 hover:shadow-md'>
+                        <Link to="/home/book-session" className='flex items-center py-2 px-4 bg-white text-[#72BF78] rounded-full font-semibold transition-all duration-300 hover:bg-gray-100 hover:shadow-md'>
                             <Plus className="w-4 h-4 mr-2" />
                             <span>Book Session</span>
-                        </button>
+                        </Link>
                     </div>
                     <nav className="flex space-x-1 bg-white/20 p-1 rounded-lg">
                         {tabs.map((tab) => (

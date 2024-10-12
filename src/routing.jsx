@@ -9,6 +9,8 @@ import ResetPassword from './AuthPages/reset_password'
 import Layout from './pages/layout'
 import Dashboard from './pages/dashboard'
 import Session from './pages/session/session'
+import BookSession from './pages/session/book_session'
+import Check_out_session from './pages/session/check_out_session'
 import CommunityLayout from './pages/communities/community_layout'
 import BuyArticle_layout from './pages/buy_article/buyArticle_layout'
 
@@ -25,6 +27,8 @@ const Routing = () => {
             <Route path='/home' element={<Layout />}>
                 <Route index element={<Dashboard />} />
                 <Route path='session' element={<Session/>} />
+                <Route path='book-session' element={<BookSession/>} />
+                <Route path='check-session/:id' element={<Check_out_session/>} />
                 <Route path='communities' element={<CommunityLayout/>} />
                 <Route path='buy-article' element={<BuyArticle_layout/>} />
                 <Route path='balance' element={<BalanceLayout/>} />
