@@ -7,11 +7,10 @@ const Layout = () => {
     return (
         <div className=''>
             <NavBar />
-            <div className=" h-full w-full">
+            <div className=" min-h-screen w-full">
                 <Outlet />
             </div>
         </div>
     )
 }
-
 export default Layout;
