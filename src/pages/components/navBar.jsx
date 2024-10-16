@@ -51,7 +51,7 @@ const NavBar = ({ communityCount = 5 }) => {
                                     onClick={() => setIsOpen((prev) => !prev)}
                                     className="flex items-center px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-[#72BF78] rounded-md hover:bg-green-600 transition-colors duration-300">
                                     <Menu className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
-                                    <span className="hidden xs:inline">Menu</span>
+                                    <span className="hidden sm:block xs:inline">Menu</span>
                                 </button>
                                 {isOpen && (
                                     <div className="absolute right-0 mt-2 w-48 z-10">
