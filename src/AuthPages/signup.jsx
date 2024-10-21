@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Globe, CheckCircle } from 'lucide-react';
+import EndPoints from '../Api/endPoints';
 import { countryData } from '../utils/data';
+
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +21,10 @@ const SignUp = () => {
         setConfirmPassword(e.target.value);
         setPasswordsMatch(e.target.value === password);
     };
+
+    const handleSubmit =async()=>{
+        console.log('submitted')
+    }
 
     return (
         <div className="font-sans bg-gray-100 min-h-screen flex items-center justify-center p-4">
