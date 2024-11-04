@@ -8,6 +8,8 @@ const EndPoints = {
     Auth:{
         login:(data)=>Post('user/login',data),
         signup:(data)=>Post('user/signup', data),
+        verify:(data)=>Post('user/email-verify', data),
+        otpResend:(data)=>Post('user/resend-otp', data),
     },
 
 }

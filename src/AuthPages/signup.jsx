@@ -57,6 +57,7 @@ const SignUp = () => {
             })
             if (data.status == 200) {
                 Success(data.message)
+                localStorage.setItem('email', values.email);
                 navigate('/verification')
             }
         } catch (errors) {

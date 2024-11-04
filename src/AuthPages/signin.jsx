@@ -5,11 +5,13 @@ import { useForm } from 'react-hook-form';
 import EndPoints from '../Api/endPoints';
 import { Success, Error } from '../components/toasts';
 import { setUserDetails, setToken } from '../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [ip, setIp] = useState([]);
+  const navigate = useNavigate()
 
   const getIp = async () => {
     const response = await fetch("https://ipapi.co/json/")
@@ -32,7 +34,7 @@ const SignIn = () => {
         Success(data.message)
         setToken(data.token)
         setUserDetails(data.user)
-        window.location.href = '/home'
+        navigate('/home')
       }
     } catch (errors) {
       Error(errors.response.data.error)
