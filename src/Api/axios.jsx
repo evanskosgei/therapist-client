@@ -23,7 +23,7 @@ instance.interceptors.response.use(
     const status = error.response.status ? error.response.status : null;
     if (status === 401) {
       // localStorage.clear('user');
-      window.location.href = '/signin'
+      window.location.href = '/'
     }
     return Promise.reject(error);
   });

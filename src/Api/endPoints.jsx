@@ -6,7 +6,8 @@ import Post from "./baseURL/post";
 
 const EndPoints = {
     Auth:{
-        signUp:(data)=>Post('/authentication/signup',data),
+        login:(data)=>Post('user/login',data),
+        signup:(data)=>Post('user/signup', data),
     },
 
 }

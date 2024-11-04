@@ -3,6 +3,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import SignIn from './AuthPages/signin'
 import SignUp from './AuthPages/signup'
+import Verify_email from './AuthPages/verify_email'
 import ForgotPassword from './AuthPages/forgot_password'
 import ResetPassword from './AuthPages/reset_password'
 
@@ -22,17 +23,18 @@ const Routing = () => {
         <Routes>
             <Route path='/' element={<SignIn />} />
             <Route path='/signup' element={<SignUp />} />
+            <Route path='/verification' element={<Verify_email />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password' element={<ResetPassword />} />
             <Route path='/home' element={<Layout />}>
                 <Route index element={<Dashboard />} />
-                <Route path='session' element={<Session/>} />
-                <Route path='book-session' element={<BookSession/>} />
-                <Route path='check-session/:id' element={<Check_out_session/>} />
-                <Route path='communities' element={<CommunityLayout/>} />
-                <Route path='buy-article' element={<BuyArticle_layout/>} />
-                <Route path='balance' element={<BalanceLayout/>} />
-                <Route path='settings' element={<SettingsLayout/>} />
+                <Route path='session' element={<Session />} />
+                <Route path='book-session' element={<BookSession />} />
+                <Route path='check-session/:id' element={<Check_out_session />} />
+                <Route path='communities' element={<CommunityLayout />} />
+                <Route path='buy-article' element={<BuyArticle_layout />} />
+                <Route path='balance' element={<BalanceLayout />} />
+                <Route path='settings' element={<SettingsLayout />} />
             </Route>
         </Routes>
     )

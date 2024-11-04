@@ -1,9 +1,43 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import EndPoints from '../Api/endPoints';
+import { Success, Error } from '../components/toasts';
+import { setUserDetails, setToken } from '../utils/helpers';
 
 const SignIn = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const [ip, setIp] = useState([]);
+
+  const getIp = async () => {
+    const response = await fetch("https://ipapi.co/json/")
+    const data = await response.json()
+    setIp(data.ip)
+  }
+
+  useEffect(() => {
+    getIp()
+  }, [])
+
+  const onSubmit = async (values) => {
+    try {
+      const { data } = await EndPoints.Auth.login({
+        email: values.email,
+        password: values.password,
+        ip_address: ip
+      })
+      if (data.status == 200) {
+        Success(data.message)
+        setToken(data.token)
+        setUserDetails(data.user)
+        window.location.href = '/home'
+      }
+    } catch (errors) {
+      Error(errors.response.data.error)
+    }
+  };
 
   return (
     <div className="font-sans bg-gray-100 min-h-screen flex items-center justify-center p-4">
@@ -16,7 +50,7 @@ const SignIn = () => {
         <div className="w-full lg:w-3/5 p-12">
           <h3 className="text-3xl font-bold text-gray-800 mb-6">Sign In</h3>
 
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
                 Email
@@ -25,11 +59,13 @@ const SignIn = () => {
                 <input
                   id="email"
                   type="email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78] pl-10"
+                  {...register('email', { required: true })}
+                  className={`w-full px-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78] pl-10`}
                   placeholder="Enter your email"
                 />
                 <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               </div>
+              {errors.email && <span className="text-red-500 text-sm">Email is required</span>}
             </div>
 
             <div className="mb-6">
@@ -40,7 +76,8 @@ const SignIn = () => {
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78] pl-10 pr-10"
+                  {...register('password', { required: true })}
+                  className={`w-full px-4 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78] pl-10 pr-10`}
                   placeholder="Enter your password"
                 />
                 <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -56,11 +93,12 @@ const SignIn = () => {
                   )}
                 </button>
               </div>
+              {errors.password && <span className="text-red-500 text-sm">Password is required</span>}
             </div>
 
             <div className="flex items-center justify-between mb-6">
               <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox text-[#72BF78]" />
+                <input type="checkbox" className="hidden form-checkbox text-[#72BF78]" />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
               <a href="/forgot-password" className="text-sm text-[#72BF78] hover:underline">Forgot password?</a>
