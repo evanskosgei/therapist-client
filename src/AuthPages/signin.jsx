@@ -4,7 +4,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import EndPoints from '../Api/endPoints';
 import { Success, Error } from '../components/toasts';
-// import { setUserDetails, setToken } from '../utils/helpers';
+import { saveToken } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser, setToken, setLoading, setError } from '../redux/authReducer';
@@ -37,16 +37,19 @@ const SignIn = () => {
       })
       if (data.status == 200) {
         Success(data.message)
-        setToken(data.token)
-        // setUserDetails(data.user)
+        saveToken(data.token)
         dispatch(setToken(data.token));
         dispatch(setUser(data.user));
         navigate('/home')
       }
     } catch (errors) {
+      if (errors.response.data.status == 400) {
+        localStorage.setItem('email', errors.response.data.email)
+        navigate('/verification')
+      }
       Error(errors.response.data.error)
       dispatch(setError(errors.response.data.error));
-    }finally{
+    } finally {
       setIsSubmitting(false);
       dispatch(setLoading(false));
     }

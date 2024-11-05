@@ -1,20 +1,50 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { User, Bell, DollarSign, Settings, Star, Clock, Briefcase, GraduationCap } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import { User, Bell, DollarSign, Settings, Star, Clock, Briefcase, GraduationCap, LocateFixedIcon } from 'lucide-react';
 import Profile_settings from './profile_settings';
 import Notification_settings from './notification_settings';
 import Security_settings from './security_settings';
 import Billing_settings from './billing_settings';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import EndPoints from '../../Api/endPoints';
+import { Error } from '../../components/toasts';
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/authReducer';
 
 const SettingsLayout = () => {
     const [currentDiv, setCurrentDiv] = useState('profile')
+    const [profile, setProfile] = useState([]);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const navItems = [
         { name: 'Profile', icon: User, label:'profile' },
         { name: 'Notifications', icon: Bell, label:'notification' },
         { name: 'Billings', icon: DollarSign, label:'billings' },
         { name: 'Security', icon: Settings, label:'security' },
     ];
+    const fetch_user = async () => {
+        try {
+            const { data } = await EndPoints.setting.profile()
+            if (data.status == 200) {
+                setProfile(data.user)
+            }
+        } catch (error) {
+            Error(error.response.data.error || error.response.data.message)
+        }
+    }
+    useEffect(() => {
+        fetch_user()
+    }, [])
+
+    const delete_account=async()=>{
+        const {data} = await EndPoints.setting.delete()
+        if(data.status == 200){
+            dispatch(logout())
+            localStorage.removeItem('user')
+            sessionStorage.removeItem('token')
+            navigate('/')
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
@@ -40,10 +70,10 @@ const SettingsLayout = () => {
                         <div className="flex flex-col items-center space-y-4">
                             <img
                                 className="w-32 h-32 rounded-full border-4 border-[#72BF78]"
-                                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
-                                alt="Tutor profile"
+                                src={profile.profile_image || <User/>}
+                                alt=""
                             />
-                            <h2 className="text-2xl font-bold text-gray-800">Jane Ferguson</h2>
+                            <h2 className="text-2xl font-bold text-gray-800">{profile.username}</h2>
                             <p className="text-gray-600">Marriage Therapist</p>
                             <button className="w-full py-2 px-4 bg-[#72BF78] text-white rounded-lg hover:bg-[#5fa866] transition duration-300">
                                 Edit Profile Image
@@ -52,15 +82,19 @@ const SettingsLayout = () => {
                         <div className="mt-6 space-y-4">
                             <div className="flex items-center space-x-2 text-gray-600">
                                 <Clock className="w-5 h-5" />
-                                <span>Member since 2024</span>
+                                <span>Member Since {new Date(profile.activation_date).toLocaleDateString()}</span>
                             </div>
                             <div className="flex items-center space-x-2 text-gray-600">
                                 <Briefcase className="w-5 h-5" />
                                 <span>534 Sessions Completed</span>
                             </div>
                             <div className="flex items-center space-x-2 text-gray-600">
-                                <GraduationCap className="w-5 h-5" />
-                                <span>Ph.D. in Health And Psychology, MIT</span>
+                                <LocateFixedIcon className="w-5 h-5" />
+                                <span>Current IP Address {profile.ip_address}</span>
+                            </div>
+                            <div className="items-center text-gray-600">
+                                <p className='text-sm'>This process is irreversible</p>
+                                <button onClick={()=>delete_account()} className='text-red-500'>Delete Account</button>
                             </div>
                         </div>
                     </div>

@@ -13,6 +13,12 @@ const EndPoints = {
         forgotpassword:(data)=>Post('user/forgot-password', data),
         resetpassword:(data)=>Post('user/reset-password', data),
     },
+    setting:{
+        profile:()=>get('user/fetch-user'),
+        update_password:(data)=>Post('user/update-password', data),
+        update_profile:(data)=>Post('user/update', data),
+        delete:()=>Post('user/delete')
+    }
 
 }
 export default EndPoints;

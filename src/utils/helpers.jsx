@@ -24,7 +24,7 @@ export function getUserDetails() {
   }
 }
 
-export function setToken(token) {
+export function saveToken(token) {
   secureLocalStorage.setItem("token", JSON.stringify(token));
 }
 
