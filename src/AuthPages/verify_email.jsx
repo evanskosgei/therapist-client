@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Verify_email = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [email, setEmail] = useState('');
     const navigate = useNavigate()
 
@@ -20,6 +21,7 @@ const Verify_email = () => {
 
     const onSubmit = async (values) => {
         try {
+            setIsSubmitting(true);
             const { data } = await EndPoints.Auth.verify({
                 email: email,
                 activation_key: values.otp
@@ -30,17 +32,19 @@ const Verify_email = () => {
             }
         } catch (errors) {
             Error(errors.response.data.error || errors.response.data.message)
+        }finally{
+            setIsSubmitting(false);
         }
     };
-    const resend = async()=>{
-        try{
-            const {data} = await EndPoints.Auth.otpResend({
-                email:email
+    const resend = async () => {
+        try {
+            const { data } = await EndPoints.Auth.otpResend({
+                email: email
             })
-            if(data.status == 200){
+            if (data.status == 200) {
                 Success(data.message)
             }
-        }catch(errors){
+        } catch (errors) {
             Error(errors.response.data.error || errors.response.data.message)
         }
     }
@@ -91,15 +95,15 @@ const Verify_email = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg hover:bg-[#5da963] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                            Verify Email
+                            className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg hover:bg-[#5da963] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled={isSubmitting}>
+                            {isSubmitting ? 'Verifying...' : 'Verify Account'}
                         </button>
                     </form>
 
                     <p className="mt-8 text-sm text-gray-600 text-center">
-                        Did not receive one time password? 
-                        <button onClick={()=>resend()}
-                         className="text-[#72BF78] hover:underline">Resend</button>
+                        Did not receive one time password?
+                        <button onClick={() => resend()}
+                            className="text-[#72BF78] hover:underline">Resend</button>
                     </p>
                 </div>
             </div>

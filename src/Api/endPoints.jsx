@@ -10,6 +10,8 @@ const EndPoints = {
         signup:(data)=>Post('user/signup', data),
         verify:(data)=>Post('user/email-verify', data),
         otpResend:(data)=>Post('user/resend-otp', data),
+        forgotpassword:(data)=>Post('user/forgot-password', data),
+        resetpassword:(data)=>Post('user/reset-password', data),
     },
 
 }

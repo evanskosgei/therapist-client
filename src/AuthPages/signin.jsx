@@ -4,14 +4,18 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import EndPoints from '../Api/endPoints';
 import { Success, Error } from '../components/toasts';
-import { setUserDetails, setToken } from '../utils/helpers';
+// import { setUserDetails, setToken } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser, setToken, setLoading, setError } from '../redux/authReducer';
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [ip, setIp] = useState([]);
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const getIp = async () => {
     const response = await fetch("https://ipapi.co/json/")
@@ -22,9 +26,10 @@ const SignIn = () => {
   useEffect(() => {
     getIp()
   }, [])
-
   const onSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
+      dispatch(setLoading(true));
       const { data } = await EndPoints.Auth.login({
         email: values.email,
         password: values.password,
@@ -33,11 +38,17 @@ const SignIn = () => {
       if (data.status == 200) {
         Success(data.message)
         setToken(data.token)
-        setUserDetails(data.user)
+        // setUserDetails(data.user)
+        dispatch(setToken(data.token));
+        dispatch(setUser(data.user));
         navigate('/home')
       }
     } catch (errors) {
       Error(errors.response.data.error)
+      dispatch(setError(errors.response.data.error));
+    }finally{
+      setIsSubmitting(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -109,8 +120,9 @@ const SignIn = () => {
             <button
               type="submit"
               className="w-full bg-[#72BF78] text-white py-2 px-4 rounded-lg hover:bg-[#5da963] transition duration-300"
+              disabled={isSubmitting}
             >
-              Sign In
+              {isSubmitting ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
 

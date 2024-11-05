@@ -5,7 +5,6 @@ import Routing from './routing'
 import { ToastContainer } from 'react-toastify';
 
 function App() {
-
   return (
     <Router>
       <ToastContainer />

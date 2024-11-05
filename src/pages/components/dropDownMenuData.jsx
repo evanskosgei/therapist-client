@@ -1,4 +1,3 @@
-
 import { Home, Settings, LogOut, BookUser, Newspaper, Users, BadgeDollarSign, HelpCircle } from 'lucide-react'
 
 export const dropDownMenuData = () => [
@@ -48,6 +47,6 @@ export const dropDownMenuData = () => [
         id: 'logout',
         label: 'Log Out',
         icon: LogOut,
-        link: '/logout'
+        link: null
     }
 ]
