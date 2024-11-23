@@ -21,6 +21,7 @@ const EndPoints = {
     },
     booking:{
         open_session:()=>get('/user/fetch-available-therapists'),
+        fetch_therapist:()=>get('/user/fetch-therapist-data'),
     },
 
 }
