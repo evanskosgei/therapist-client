@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import EndPoints from '../../Api/endPoints';
 import { Error } from '../../components/toasts';
 import { useDispatch } from 'react-redux'
-import { logout } from '../../redux/authReducer';
+import { logout } from '../../redux/AuthReducer';
 
 const SettingsLayout = () => {
     const [currentDiv, setCurrentDiv] = useState('profile')

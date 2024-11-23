@@ -7,7 +7,7 @@ import { Success, Error } from '../components/toasts';
 import { saveToken } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setUser, setToken, setLoading, setError } from '../redux/authReducer';
+import { setUser, setToken, setLoading, setError } from '../redux/AuthReducer';
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();

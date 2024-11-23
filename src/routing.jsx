@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
@@ -18,27 +19,23 @@ import BuyArticle_layout from './pages/buy_article/buyArticle_layout'
 import BalanceLayout from './pages/balance/balance_layout'
 import SettingsLayout from './pages/settings/settings_layout'
 
-import { useAuth } from './providers/AuthProvider'
-import { useSelector, useDispatch } from 'react-redux'
-import { setUser, setLoading, setError } from './redux/authReducer'
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser, setLoading, setError } from './redux/AuthReducer'
 
-// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useSelector((state) => state.auth)
-    // console.log(user)
     const dispatch = useDispatch()
-
+  
     if (loading) {
         return <div>Loading...</div>
     }
-
+  
     if (!user) {
         return <Navigate to="/" replace />
     }
-
-    return children
-    
-}
+    return children;
+  };
+  
 
 const Routing = () => {
     return (

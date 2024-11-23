@@ -3,21 +3,19 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { dropDownMenuData } from './dropDownMenuData'
-// import { logout } from './redux/authReducer'
-import { logout } from '../../redux/authReducer'
+import { persistor } from '../../redux/store'
 
 const DropDownMenu = () => {
     const menuItems = dropDownMenuData()
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const handleLogout = () => {
-        dispatch(logout())
-        localStorage.removeItem('user')
-        sessionStorage.removeItem('token')
-        navigate('/')
-    }
+    const handleLogout = async () => {
+        await persistor.purge();
+        localStorage.clear();
+        navigate('/');
 
+    }
     return (
         <div className="z-10 bg-white rounded-lg shadow-lg w-48 flex-grow border border-gray-200">
             <ul className="py-1">

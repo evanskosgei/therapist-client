@@ -18,7 +18,10 @@ const EndPoints = {
         update_password:(data)=>Post('user/update-password', data),
         update_profile:(data)=>Post('user/update', data),
         delete:()=>Post('user/delete')
-    }
+    },
+    booking:{
+        open_session:()=>get('/user/fetch-available-therapists'),
+    },
 
 }
 export default EndPoints;
