@@ -32,7 +32,6 @@ const BookSession = () => {
             setIsLoading(false);
         }
     };
-
     useEffect(() => {
         fetch_therapists_available();
     }, []);
