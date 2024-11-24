@@ -22,6 +22,7 @@ const EndPoints = {
     booking:{
         open_session:()=>get('/user/fetch-available-therapists'),
         fetch_therapist:()=>get('/user/fetch-therapist-data'),
+        fetch_therapist_data:(data)=>Post('/user/fetch-therapist-data', data),
     },
 
 }

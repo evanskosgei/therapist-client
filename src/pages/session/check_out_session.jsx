@@ -1,27 +1,45 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star, LoaderCircle } from 'lucide-react';
+import { Error } from '../../components/toasts'
+import EndPoints from '../../Api/endPoints';
+import { useParams } from 'react-router-dom';
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
+    const [therapist, setTherapist] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
+    const { id } = useParams()
 
-    const therapist = {
-        username: 'staroneso123',
-        city: 'Nairobi',
-        country: 'Kenya',
-        reviews: 809,
-        specialization: 'Marriage Therapy',
-        completedSessions: 408,
-        hoursPerSession: '2 hours',
-        pricePerSession: 200,
-        activitySummary: '9 Sessions in last 14 days',
-        bio: 'Licensed Marriage and Family Therapist with over 10 years of experience.'
-    };
+    const fetch_therapist_data = async (id) => {
+        try {
+            setIsLoading(true)
+            const { data } = await EndPoints.booking.fetch_therapist_data({ id });
+            if (data.status === 200) {
+                setTherapist(data.therapist[0]);
+            }
+        } catch (error) {
+            Error(error.response.data.error || error.message || "An Error Occurred!")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    useEffect(() => {
+        fetch_therapist_data(id)
+    }, [id])
 
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value);
     };
 
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <LoaderCircle className="animate-spin h-10 w-10" />
+            </div>
+        );
+    }
+    
     const renderPaymentDetails = () => {
         switch (paymentMethod) {
             case 'mpesa':
@@ -99,19 +117,17 @@ const CheckoutSession = () => {
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
             <div className="max-w-6xl mx-auto">
                 <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    {/* Therapist Header */}
                     <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-[#72BF78] rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                            {therapist.username.slice(0, 2).toUpperCase()}
+                            {therapist?.therapistprofile?.firstname.slice(0, 2).toUpperCase()}
                         </div>
                         <div className="text-center md:text-left">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">{therapist.username}</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">{therapist?.therapistprofile?.firstname} {therapist?.therapistprofile?.middlename} {therapist?.therapistprofile?.lastname}</h2>
                             <p className="text-lg text-gray-600">
-                                {therapist.city}, {therapist.country}
+                                {therapist?.therapistprofile?.address}, {therapist.country}
                             </p>
                         </div>
                     </div>
-
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="flex items-center space-x-2">
@@ -120,32 +136,37 @@ const CheckoutSession = () => {
                                 {[...Array(5)].map((_, i) => (
                                     <Star
                                         key={i}
-                                        className="w-5 h-5 text-yellow-400"
+                                        className={`w-5 h-5 ${i < Math.round(therapist?.average_rating) ? 'text-yellow-400' : 'text-gray-300'}`}
                                         fill="currentColor"
+                                        aria-label={`Star rating: ${Math.round(therapist?.average_rating)}/5`}
                                     />
                                 ))}
-                                <span className="ml-2 text-gray-600">({therapist.reviews})</span>
+                                <span className="ml-2 text-gray-600">({therapist?.performance_ratings_count})</span>
                             </div>
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Specialization:</span>
-                            <span>{therapist.specialization}</span>
+                            <span>{therapist?.therapistprofile?.specialization}</span>
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Completed Sessions:</span>
-                            <span>{therapist.completedSessions}</span>
+                            <span>{therapist?.completedSessions}</span>
                         </div>
                     </div>
 
                     {/* Session Details */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Hours Per Session:</span>
-                            <span>{therapist.hoursPerSession}</span>
+                            <span>{therapist?.therapistprofile?.hours_per_session} Hours</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="font-medium">Available:</span>
+                            <span>{therapist?.profile_availability?.number_of_days_per_week} Per Week.</span>
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Price Per Session:</span>
-                            <span className="text-[#72BF78] font-semibold">${therapist.pricePerSession}</span>
+                            <span className="text-[#72BF78] font-semibold">${therapist?.therapistprofile?.price_per_session}</span>
                         </div>
                     </div>
 
@@ -160,7 +181,7 @@ const CheckoutSession = () => {
                         <div className="border-t pt-4">
                             <p className="text-sm text-gray-600">
                                 <span className="font-medium">Bio: </span>
-                                {therapist.bio}
+                                {therapist?.therapistprofile?.bio}
                             </p>
                         </div>
                     </div>
