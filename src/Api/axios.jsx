@@ -14,16 +14,16 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-// instance.interceptors.response.use(
-//   response => {
-//     return response;
-//   },
-//   error => {
-//     const status = error.response.data.message ? error.response.data.message : null;
-//     if (status === "Unauthenticated.") {
-//       // localStorage.clear('user');
-//       window.location.href = '/'
-//     }
-//     return Promise.reject(error);
-//   });
+instance.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    const status = error.response.data.message ? error.response.data.message : null;
+    if (status === "Unauthenticated.") {
+      // localStorage.clear('user');
+      window.location.href = '/'
+    }
+    return Promise.reject(error);
+  });
 export default instance
