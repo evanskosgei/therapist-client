@@ -15,8 +15,10 @@ const BookSession = () => {
     const [days, setDays] = useState('');
     const [therapist, setTherapist] = useState('');
     const [therapists, setTherapists] = useState([]);
+    const [therapyTypes,  setTherapyTypes] = useState([]);
     const [filteredTherapists, setFilteredTherapists] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const fetch_therapists_available = async () => {
         setIsLoading(true);
@@ -32,8 +34,23 @@ const BookSession = () => {
             setIsLoading(false);
         }
     };
+
+    const fetch_therapy_types =async()=>{
+        try{
+            setLoading(true)
+            const {data} = await EndPoints.therapy_type.types()
+            if(data.status === 200){
+                setTherapyTypes(data.types)
+            }
+        }catch(error){
+            Error(error.response.data.error || error.message || "An Error Occurred!")
+        }finally{
+            setLoading(false)
+        }
+    }
     useEffect(() => {
         fetch_therapists_available();
+        fetch_therapy_types()
     }, []);
 
     // Debounce function
@@ -99,7 +116,13 @@ const BookSession = () => {
         setTherapist('');
         setFilteredTherapists(therapists);
     };
-
+    if (loading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <LoaderCircle className="animate-spin h-10 w-10" />
+            </div>
+        );
+    }
     return (
         <div className="bg-gray-50 min-h-full space-y-4 p-4 sm:p-8">
             <main className="max-w-6xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
@@ -118,8 +141,8 @@ const BookSession = () => {
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
                                     <option value="">Select Category</option>
-                                    {therapyCategories.map((cat, index) => (
-                                        <option key={index} value={cat.name}>{cat.name}</option>
+                                    {therapyTypes.map((cat, index) => (
+                                        <option key={index} value={cat.therapy_name}>{cat.therapy_name}</option>
                                     ))}
                                 </select>
                             </div>

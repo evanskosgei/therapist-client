@@ -24,6 +24,9 @@ const EndPoints = {
         fetch_therapist:()=>get('/user/fetch-therapist-data'),
         fetch_therapist_data:(data)=>Post('/user/fetch-therapist-data', data),
     },
+    therapy_type:{
+        types:()=>get('/user/fetch-therapy-types'),
+    },
 
 }
 export default EndPoints;
