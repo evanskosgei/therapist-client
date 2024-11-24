@@ -94,7 +94,7 @@ const BookSession = () => {
             if (days) {
                 filtered = filtered.filter(t => {
                     const availableDays = t.profile_availability?.days_of_week || [];
-                    return availableDays.includes(days);  // Check if the selected day is in the available days array
+                    return availableDays.includes(days); 
                 });
             }
 
