@@ -24,7 +24,6 @@ const Session = () => {
         fetch_active_sessions()
     }, [])
 
-    console.log(activeSessions)
 
     return (
         <div className="bg-gray-100 min-h-screen p-4 sm:p-8">
@@ -58,9 +57,9 @@ const Session = () => {
                         <SessionCard
                             title={session.Session_topic || "Default Title"}
                             description={session.Session_description || "Default Description"}
-                            date= {new Date(session.session_date).toDateString("en-US")} 
-                            starttime={session.session_start_time}
-                            endtime ={session.session_end_time}
+                            date={new Date(session.session_date).toDateString("en-US")}
+                            starttime={new Date(`1970-01-01T${session.session_start_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) }
+                            endtime={new Date(`1970-01-01T${session.session_end_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                             link_to={`/session/${session.session_code}`}
                         />
                     </div>
@@ -95,5 +94,6 @@ const SessionCard = ({ title, description, starttime, endtime, date, link_to }) 
         </div>
     </div>
 );
+
 
 export default Session;
