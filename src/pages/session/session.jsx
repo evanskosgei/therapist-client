@@ -1,13 +1,30 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, ChevronRight, Calendar, Plus } from 'lucide-react';
+import { Error } from '../../components/toasts';
+import EndPoints from '../../Api/endPoints';
 
 const Session = () => {
     const [activeTab, setActiveTab] = useState('Completed');
-
     const tabs = ['Active', 'Completed', 'Cancelled'];
+    const [activeSessions, setActiveSessions] = useState([]);
+    const fetch_active_sessions = async () => {
+        try {
+            const { data } = await EndPoints.booking.fetch_active_session_bookings()
+            if (data.status === 200) {
+                setActiveSessions(data.sessions)
+            }
+        } catch (error) {
+            Error(error?.response?.data?.error || error?.message || error?.response?.data?.message || "An Error Occurred!")
+        }
+    }
+    useEffect(() => {
+        fetch_active_sessions()
+    }, [])
+
+    console.log(activeSessions)
 
     return (
         <div className="bg-gray-100 min-h-screen p-4 sm:p-8">
@@ -36,26 +53,25 @@ const Session = () => {
                         ))}
                     </nav>
                 </div>
-                <div className="p-6">
-                    <SessionCard
-                        title="Small Team Discussion"
-                        description="Join our small team for an insightful discussion on project management strategies and team collaboration techniques."
-                        date="20 APR 2024"
-                        time="2:00 PM - 3:30 PM"
-                    />
-                    <SessionCard
-                        title="Wellness Workshop"
-                        description="Participate in our wellness workshop focusing on stress management and maintaining work-life balance in a remote work environment."
-                        date="22 APR 2024"
-                        time="4:00 PM - 5:00 PM"
-                    />
-                </div>
+                {activeSessions.map((session, index) => (
+                    <div key={session.id || index} className="p-6">
+                        <SessionCard
+                            title={session.Session_topic || "Default Title"}
+                            description={session.Session_description || "Default Description"}
+                            date= {new Date(session.session_date).toDateString("en-US")} 
+                            starttime={session.session_start_time}
+                            endtime ={session.session_end_time}
+                            link_to={`/session/${session.session_code}`}
+                        />
+                    </div>
+                ))}
+
             </main>
         </div>
     );
 };
 
-const SessionCard = ({ title, description, time, date }) => (
+const SessionCard = ({ title, description, starttime, endtime, date, link_to }) => (
     <div className="mb-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
         <div className="p-5">
             <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
@@ -68,10 +84,10 @@ const SessionCard = ({ title, description, time, date }) => (
                     </div>
                     <div className="flex items-center">
                         <Clock className="w-4 h-4 mr-1 text-[#72BF78]" />
-                        <span>{time}</span>
+                        <span>{starttime}</span> - <span>{endtime}</span>
                     </div>
                 </div>
-                <a href='#' target='_blank' className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#72BF78] rounded-lg hover:bg-[#5da863] transition-colors duration-300 shadow-md hover:shadow-lg">
+                <a href={link_to} target='_blank' className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#72BF78] rounded-lg hover:bg-[#5da863] transition-colors duration-300 shadow-md hover:shadow-lg">
                     Join
                     <ChevronRight className="w-4 h-4 ml-1" />
                 </a>

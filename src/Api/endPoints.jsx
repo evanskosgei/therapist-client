@@ -23,6 +23,7 @@ const EndPoints = {
         open_session:()=>get('/user/fetch-available-therapists'),
         fetch_therapist:()=>get('/user/fetch-therapist-data'),
         fetch_therapist_data:(data)=>Post('/user/fetch-therapist-data', data),
+        fetch_active_session_bookings:()=>get('/user/booked-sessions'),
     },
     therapy_type:{
         types:()=>get('/user/fetch-therapy-types'),
