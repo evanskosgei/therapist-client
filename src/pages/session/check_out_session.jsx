@@ -4,6 +4,7 @@ import { Star, LoaderCircle } from 'lucide-react';
 import { Error } from '../../components/toasts'
 import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
+import { dayOfWeek } from '../../utils/days';
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -39,7 +40,7 @@ const CheckoutSession = () => {
             </div>
         );
     }
-    
+
     const renderPaymentDetails = () => {
         switch (paymentMethod) {
             case 'mpesa':
@@ -195,11 +196,9 @@ const CheckoutSession = () => {
                                     <label className="block text-sm font-medium text-gray-700">Day of the Week</label>
                                     <select className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg">
                                         <option value="">Select Day</option>
-                                        <option value="monday">Monday</option>
-                                        <option value="tuesday">Tuesday</option>
-                                        <option value="wednesday">Wednesday</option>
-                                        <option value="thursday">Thursday</option>
-                                        <option value="friday">Friday</option>
+                                        {dayOfWeek.map((dayOfWeek, index) => (
+                                            <option key={index} value={dayOfWeek.day}>{dayOfWeek.day}</option>
+                                        ))}
                                     </select>
                                 </div>
 
