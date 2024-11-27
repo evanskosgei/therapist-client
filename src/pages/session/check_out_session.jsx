@@ -5,6 +5,7 @@ import { Error } from '../../components/toasts'
 import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
+import { Datepicker } from "flowbite-react";
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -115,7 +116,7 @@ const CheckoutSession = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+        <div className="min-h-full bg-gray-50 p-4 md:p-8">
             <div className="max-w-6xl mx-auto">
                 <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
                     <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
@@ -201,23 +202,6 @@ const CheckoutSession = () => {
                                         ))}
                                     </select>
                                 </div>
-
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
-                                    <input
-                                        type="date"
-                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Time for the Session</label>
-                                    <input
-                                        type="time"
-                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
-                                    />
-                                </div>
-
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                     <select
@@ -229,6 +213,34 @@ const CheckoutSession = () => {
                                         <option value="mpesa">Mpesa</option>
                                         <option value="card">Credit Card</option>
                                     </select>
+                                </div>
+
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Time for the Session</label>
+                                    <input
+                                        type="time"
+                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                    />
+                                </div>
+                                {/* <div className="space-y-2">
+                                    <Space direction="vertical">
+                                        <DatePicker style={{
+                                            maxWidth: 1000,
+                                        }} onChange="" />
+                                    </Space>
+                                </div> */}
+
+                                {/* <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
+                                    <input
+                                        type="date"
+                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                    />
+                                </div> */}
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
+                                    <Datepicker className='z-1000'/>
                                 </div>
                             </div>
 

@@ -74,7 +74,7 @@ const Session = () => {
                 <div className="bg-gradient-to-r from-[#72BF78] to-[#5da863] p-6">
                     <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6'>
                         <h1 className="text-2xl font-bold text-white mb-4 sm:mb-0">Your Sessions</h1>
-                        <Link to="/home/book-session" target='_blank' className='flex items-center py-2 px-4 bg-white text-[#72BF78] rounded-full font-semibold transition-all duration-300 hover:bg-gray-100 hover:shadow-md'>
+                        <Link to="/home/book-session" className='flex items-center py-2 px-4 bg-white text-[#72BF78] rounded-full font-semibold transition-all duration-300 hover:bg-gray-100 hover:shadow-md'>
                             <Plus className="w-4 h-4 mr-2" />
                             <span>Book Session</span>
                         </Link>
@@ -192,10 +192,10 @@ const SessionCard = ({ title, description, starttime, endtime, date, link_to }) 
                         <span>{starttime}</span> to <span>{endtime}</span>
                     </div>
                 </div>
-                <a href={link_to} target='_blank' className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#72BF78] rounded-lg hover:bg-[#5da863] transition-colors duration-300 shadow-md hover:shadow-lg">
+                <Link to={link_to} target='_blank' className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#72BF78] rounded-lg hover:bg-[#5da863] transition-colors duration-300 shadow-md hover:shadow-lg">
                     Join
                     <ChevronRight className="w-4 h-4 ml-1" />
-                </a>
+                </Link>
             </div>
         </div>
     </div>
