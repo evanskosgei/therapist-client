@@ -10,6 +10,7 @@ import { Datepicker } from "flowbite-react";
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [therapist, setTherapist] = useState('');
+    const [pmethods, setPMethods] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const { id } = useParams()
 
@@ -26,8 +27,22 @@ const CheckoutSession = () => {
             setIsLoading(false)
         }
     }
+    const fetch_payment_method = async () => {
+        try {
+            setIsLoading(true);
+            const { data } = await EndPoints.payment_methods.fetch_payment_methods()
+            if (data.status === 200) {
+                setPMethods(data.methods);
+            }
+        } catch (error) {
+            Error(error.response?.data?.error || error.message || "An Error Occurred!");
+        } finally {
+            setIsLoading(false);
+        }
+    };
     useEffect(() => {
         fetch_therapist_data(id)
+        fetch_payment_method()
     }, [id])
 
     const handlePaymentMethodChange = (e) => {
@@ -40,6 +55,14 @@ const CheckoutSession = () => {
                 <LoaderCircle className="animate-spin h-10 w-10" />
             </div>
         );
+    }
+
+    const customTheme = {
+        popup: {
+            root: {
+                inner: "inline-block rounded-lg bg-white p-4 shadow-lg dark:bg-gray-800"
+            }
+        }
     }
 
     const renderPaymentDetails = () => {
@@ -64,7 +87,7 @@ const CheckoutSession = () => {
                     </div>
                 );
 
-            case 'card':
+            case 'credit card':
                 return (
                     <div className="space-y-4">
                         <div className="space-y-2">
@@ -207,11 +230,12 @@ const CheckoutSession = () => {
                                     <select
                                         className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
                                         onChange={handlePaymentMethodChange}
-                                        value={paymentMethod}
-                                    >
+                                        value={paymentMethod}>
                                         <option value="">Select Payment Method</option>
-                                        <option value="mpesa">Mpesa</option>
-                                        <option value="card">Credit Card</option>
+                                        {pmethods.map((method, index) => (
+                                            <option key={index} value={(method.method_name).toLowerCase()}>{method.method_name}</option>
+                                        ))}
+                                        {/* <option value="card">Credit Card</option> */}
                                     </select>
                                 </div>
 
@@ -240,8 +264,9 @@ const CheckoutSession = () => {
                                 </div> */}
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
-                                    <Datepicker className='z-1000'/>
+                                    <Datepicker theme={customTheme} datepicker-orientation="{top|right|bottom|left}" />
                                 </div>
+
                             </div>
 
                             {/* Conditional Payment Details */}

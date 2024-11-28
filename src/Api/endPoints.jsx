@@ -30,6 +30,9 @@ const EndPoints = {
     therapy_type:{
         types:()=>get('/user/fetch-therapy-types'),
     },
+    payment_methods:{
+        fetch_payment_methods:()=>get('/user/fetch-payment-methods'),
+    },
 
 }
 export default EndPoints;
