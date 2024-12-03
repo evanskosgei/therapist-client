@@ -106,7 +106,7 @@ const Session = () => {
                                         date={session.session_date}
                                         starttime={new Date(`1970-01-01T${session.session_start_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                         endtime={new Date(`1970-01-01T${session.session_end_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                        link_to={`/session/${session.session_code}`}
+                                        link_to={`/home/session/${session.session_code}`}
                                     />
                                 </div>
                             ))
@@ -126,7 +126,7 @@ const Session = () => {
                                         date={session.session_date}
                                         starttime={new Date(`1970-01-01T${session.session_start_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                         endtime={new Date(`1970-01-01T${session.session_end_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                        link_to={`/session/${session.session_code}`}
+                                        link_to={`/home/session/${session.session_code}`}
                                     />
                                 </div>
                             ))
@@ -146,7 +146,7 @@ const Session = () => {
                                         date={session.session_date}
                                         starttime={new Date(`1970-01-01T${session.session_start_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                         endtime={new Date(`1970-01-01T${session.session_end_time}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                        link_to={`/session/${session.session_code}`}
+                                        link_to={`/home/session/${session.session_code}`}
                                     />
                                 </div>
                             ))

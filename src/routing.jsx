@@ -22,6 +22,9 @@ import SettingsLayout from './pages/settings/settings_layout'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setLoading, setError } from './redux/AuthReducer'
 
+// video call
+import Videocall from './pages/video_session/videocall'
+
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
@@ -46,11 +49,7 @@ const Routing = () => {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
 
-            <Route path='/home' element={
-                <ProtectedRoute>
-                    <Layout />
-                </ProtectedRoute>
-            }>
+            <Route path='/home' element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                 <Route index element={<Dashboard />} />
                 <Route path='session' element={<Session />} />
                 <Route path='book-session' element={<BookSession />} />
@@ -59,7 +58,9 @@ const Routing = () => {
                 <Route path='buy-article' element={<BuyArticle_layout />} />
                 <Route path='balance' element={<BalanceLayout />} />
                 <Route path='settings' element={<SettingsLayout />} />
+                <Route path='session/:code' element={<Videocall/>} />
             </Route>
+
 
         </Routes>
     )

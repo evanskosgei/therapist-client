@@ -6,6 +6,9 @@ import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
 import { Datepicker } from "flowbite-react";
+import { TimePicker } from "antd";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import dayjs from 'dayjs';
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -215,6 +218,13 @@ const CheckoutSession = () => {
                     <div className="border-t pt-8">
                         <h3 className="text-2xl font-bold mb-6">Request For A Session</h3>
                         <form className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">Session Topic</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                />
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Day of the Week</label>
@@ -235,17 +245,18 @@ const CheckoutSession = () => {
                                         {pmethods.map((method, index) => (
                                             <option key={index} value={(method.method_name).toLowerCase()}>{method.method_name}</option>
                                         ))}
-                                        {/* <option value="card">Credit Card</option> */}
                                     </select>
                                 </div>
 
 
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Time for the Session</label>
-                                    <input
+                                    {/* <TimePicker defaultOpenValue={dayjs('00:00', 'HH:mm')} /> */}
+                                    <input type="time" id="time" className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg" min="09:00" max="18:00" value="00:00" required />
+                                    {/* <input
                                         type="time"
                                         className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
-                                    />
+                                    /> */}
                                 </div>
                                 {/* <div className="space-y-2">
                                     <Space direction="vertical">
