@@ -6,7 +6,7 @@ import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
 import { CTimePicker, CDatePicker } from '@coreui/react-pro';
-import '@coreui/coreui-pro/dist/css/coreui.min.css'
+// import '@coreui/coreui-pro/dist/css/coreui.min.css'
 // import '../../App.css'
 
 const CheckoutSession = () => {

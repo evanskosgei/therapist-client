@@ -30,13 +30,16 @@ const DropDownMenu = () => {
                                 {item.label}
                             </Link>
                         ) : (
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center w-full px-4 py-4 text-sm text-gray-700 hover:bg-[#72BF78] hover:text-white transition-colors duration-200"
-                            >
-                                <item.icon className="w-5 h-5 mr-3" />
-                                {item.label}
-                            </button>
+                            <>
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center w-full px-4 py-4 text-sm text-gray-700 hover:bg-[#72BF78] hover:text-white transition-colors duration-200"
+                                >
+                                    <item.icon className="w-5 h-5 mr-3" />
+                                    {item.label}
+                                </button>
+                            </>
+
                         )}
                     </li>
                 ))}

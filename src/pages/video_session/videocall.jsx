@@ -10,7 +10,7 @@ const Videocall = () => {
     // ICE configuration for STUN/TURN servers
     const iceConfig = {
         iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun.l.google.com:1302' },
             { urls: 'stun:stun1.l.google.com:19302' },
             // Add TURN servers here for better connectivity
             // {
