@@ -11,7 +11,7 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [ip, setIp] = useState([]);
+    const [ip, setIp] = useState();
     const navigate = useNavigate();
 
     const getIp = async () => {
@@ -38,34 +38,38 @@ const SignUp = () => {
 
     const password = watch('password');
     const onSubmit = async (values) => {
-        try {
-            setIsSubmitting(true);
-            if (values.password !== values.confirmPassword) {
-                setError('confirmPassword', {
-                    type: 'match',
-                    message: 'Passwords do not match'
-                });
-                return;
+        if (ip.length > 0) {
+            try {
+                setIsSubmitting(true);
+                if (values.password !== values.confirmPassword) {
+                    setError('confirmPassword', {
+                        type: 'match',
+                        message: 'Passwords do not match'
+                    });
+                    return;
+                }
+                const { data } = await EndPoints.Auth.signup({
+                    username: values.username,
+                    email: values.email,
+                    contact: values.contact,
+                    country: values.country,
+                    password: values.password,
+                    ip_address: ip
+                })
+                if (data.status == 200) {
+                    Success(data.message)
+                    localStorage.setItem('email', values.email);
+                    navigate('/verification')
+                }
+            } catch (errors) {
+                console.log(errors)
+                Error(errors.response.data.error || errors.response.data.message)
+            } finally {
+                setIsSubmitting(false);
             }
-            const { data } = await EndPoints.Auth.signup({
-                username: values.username,
-                email: values.email,
-                contact: values.contact,
-                country: values.country,
-                password: values.password,
-                ip_address: ip
-            })
-            if (data.status == 200) {
-                Success(data.message)
-                localStorage.setItem('email', values.email);
-                navigate('/verification')
-            }
-        } catch (errors) {
-            console.log(errors)
-            Error(errors.response.data.error || errors.response.data.message)
-        } finally {
-            setIsSubmitting(false);
-        }
+        } else{
+            Error('Something went wrong! Check your internet')
+          }
     };
 
     return (

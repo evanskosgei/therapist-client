@@ -13,7 +13,7 @@ const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [ip, setIp] = useState([]);
+  const [ip, setIp] = useState();
   const navigate = useNavigate()
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const SignIn = () => {
     getIp()
   }, [])
   const onSubmit = async (values) => {
-    if (ip) {
+    if (ip.length > 0) {
       try {
         setIsSubmitting(true);
         dispatch(setLoading(true));

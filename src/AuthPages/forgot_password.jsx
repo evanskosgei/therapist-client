@@ -87,7 +87,7 @@ const ForgotPassword = () => {
                     )}
 
                     <div className="mt-8 text-center">
-                        <a href="/signin" className="text-[#72BF78] hover:underline text-sm">
+                        <a href="/" className="text-[#72BF78] hover:underline text-sm">
                             Remember your password? Sign in
                         </a>
                     </div>
