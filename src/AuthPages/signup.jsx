@@ -15,7 +15,7 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const getIp = async () => {
-        const response = await fetch("https://ipapi.co/json/")
+        const response = await fetch(import.meta.env.VITE_IP_URL)
         const data = await response.json()
         setIp(data.ip)
     }

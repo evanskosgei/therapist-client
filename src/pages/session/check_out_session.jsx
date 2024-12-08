@@ -5,10 +5,9 @@ import { Error } from '../../components/toasts'
 import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
-import { Datepicker } from "flowbite-react";
-import { TimePicker } from "antd";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import dayjs from 'dayjs';
+import { CTimePicker, CDatePicker } from '@coreui/react-pro';
+import '@coreui/coreui-pro/dist/css/coreui.min.css'
+// import '../../App.css'
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -51,6 +50,8 @@ const CheckoutSession = () => {
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value);
     };
+    const [startDate, setStartDate] = useState(null);
+    const [time, setTime] = useState('09:00');
 
     if (isLoading) {
         return (
@@ -83,7 +84,7 @@ const CheckoutSession = () => {
                                 pattern="[0-9]{9}"
                                 placeholder="712345678"
                                 maxLength="9"
-                                className="w-full p-3 bg-gray-50 border border-gray-300 rounded-none rounded-r-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                className="w-full p-2 border border-gray-300 focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
                         </div>
                         <p className="text-xs text-gray-500">Enter your M-Pesa registered phone number</p>
@@ -99,7 +100,7 @@ const CheckoutSession = () => {
                                 type="text"
                                 placeholder="1234 5678 9012 3456"
                                 maxLength="19"
-                                className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
                         </div>
 
@@ -110,7 +111,7 @@ const CheckoutSession = () => {
                                     type="text"
                                     placeholder="MM/YY"
                                     maxLength="5"
-                                    className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
                             </div>
 
@@ -120,7 +121,7 @@ const CheckoutSession = () => {
                                     type="text"
                                     placeholder="123"
                                     maxLength="3"
-                                    className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
                             </div>
                         </div>
@@ -130,7 +131,7 @@ const CheckoutSession = () => {
                             <input
                                 type="text"
                                 placeholder="John Doe"
-                                className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
                         </div>
                     </div>
@@ -190,7 +191,7 @@ const CheckoutSession = () => {
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Available:</span>
-                            <span>{therapist?.profile_availability?.number_of_days_per_week} Per Week.</span>
+                            <span>{therapist?.profile_availability?.number_of_days_per_week}days Per Week.</span>
                         </div>
                         <div className="flex items-center space-x-2">
                             <span className="font-medium">Price Per Session:</span>
@@ -222,13 +223,14 @@ const CheckoutSession = () => {
                                 <label className="block text-sm font-medium text-gray-700">Session Topic</label>
                                 <input
                                     type="text"
-                                    className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Day of the Week</label>
-                                    <select className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg">
+                                    <select 
+                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]">
                                         <option value="">Select Day</option>
                                         {dayOfWeek.map((dayOfWeek, index) => (
                                             <option key={index} value={dayOfWeek.day}>{dayOfWeek.day}</option>
@@ -238,7 +240,7 @@ const CheckoutSession = () => {
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                     <select
-                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                         onChange={handlePaymentMethodChange}
                                         value={paymentMethod}>
                                         <option value="">Select Payment Method</option>
@@ -248,39 +250,32 @@ const CheckoutSession = () => {
                                     </select>
                                 </div>
 
-
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Time for the Session</label>
-                                    {/* <TimePicker defaultOpenValue={dayjs('00:00', 'HH:mm')} /> */}
-                                    <input type="time" id="time" className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg" min="09:00" max="18:00" value="00:00" required />
-                                    {/* <input
-                                        type="time"
-                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
-                                    /> */}
-                                </div>
-                                {/* <div className="space-y-2">
-                                    <Space direction="vertical">
-                                        <DatePicker style={{
-                                            maxWidth: 1000,
-                                        }} onChange="" />
-                                    </Space>
-                                </div> */}
-
-                                {/* <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
-                                    <input
-                                        type="date"
-                                        className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg"
+                                    <CTimePicker locale="en-US" seconds={false}
+                                        className=" w-full bg-gray-50 border border-gray-300 rounded-lg"
                                     />
-                                </div> */}
+                                </div>
+
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
-                                    <Datepicker theme={customTheme} datepicker-orientation="{top|right|bottom|left}" />
+                                    <CDatePicker locale="en-US"
+                                       className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    />
                                 </div>
-
+                                {/* <div className="space-y-2">
+                                    <label className="date-picker-label">Date for the Session</label>
+                                    <DatePicker
+                                        onChange={(date) => setStartDate(date)}
+                                        selected={startDate}
+                                        className="date-picker"
+                                        placeholderText="Select date"
+                                        dateFormat="MM/dd/yyyy"
+                                    />
+                                </div> */}
                             </div>
 
-                            {/* Conditional Payment Details */}
+
                             {renderPaymentDetails()}
 
                             <button

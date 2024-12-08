@@ -136,7 +136,7 @@ const BookSession = () => {
                             <label className="block mb-2 text-sm font-medium text-gray-700">Therapy Category</label>
                             <div className="relative">
                                 <select
-                                    className="w-full p-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
@@ -151,7 +151,7 @@ const BookSession = () => {
                             <label className="block mb-2 text-sm font-medium text-gray-700">Therapist Location</label>
                             <div className="relative">
                                 <select
-                                    className="w-full p-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
                                 >
@@ -167,7 +167,7 @@ const BookSession = () => {
                             <div className="relative">
                                 <input
                                     type="number"
-                                    className="w-full p-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
                                 />
@@ -177,7 +177,7 @@ const BookSession = () => {
                             <label className="block mb-2 text-sm font-medium text-gray-700">Day Of The Week</label>
                             <div className="relative">
                                 <select
-                                    className="w-full p-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
                                     value={days}
                                     onChange={(e) => setDays(e.target.value)}
                                 >
@@ -194,7 +194,7 @@ const BookSession = () => {
                         <div className="relative">
                             <input
                                 type="text"
-                                className="w-full p-3 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                className="w-full p-2 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 placeholder="Search by name or email"
                                 value={therapist}
                                 onChange={(e) => setTherapist(e.target.value)}

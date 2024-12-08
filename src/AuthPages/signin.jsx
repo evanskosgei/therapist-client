@@ -18,7 +18,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
 
   const getIp = async () => {
-    const response = await fetch("https://ipapi.co/json/")
+    const response = await fetch(import.meta.env.VITE_IP_URL)
     const data = await response.json()
     setIp(data.ip)
   }
@@ -27,31 +27,35 @@ const SignIn = () => {
     getIp()
   }, [])
   const onSubmit = async (values) => {
-    try {
-      setIsSubmitting(true);
-      dispatch(setLoading(true));
-      const { data } = await EndPoints.Auth.login({
-        email: values.email,
-        password: values.password,
-        ip_address: ip
-      })
-      if (data.status == 200) {
-        Success(data.message)
-        saveToken(data.token)
-        dispatch(setToken(data.token));
-        dispatch(setUser(data.user));
-        navigate('/home')
+    if (ip) {
+      try {
+        setIsSubmitting(true);
+        dispatch(setLoading(true));
+        const { data } = await EndPoints.Auth.login({
+          email: values.email,
+          password: values.password,
+          ip_address: ip
+        })
+        if (data.status == 200) {
+          Success(data.message)
+          saveToken(data.token)
+          dispatch(setToken(data.token));
+          dispatch(setUser(data.user));
+          navigate('/home')
+        }
+      } catch (errors) {
+        if (errors.response.data.status == 400) {
+          localStorage.setItem('email', errors.response.data.email)
+          navigate('/verification')
+        }
+        Error(errors.response.data.error)
+        dispatch(setError(errors.response.data.error));
+      } finally {
+        setIsSubmitting(false);
+        dispatch(setLoading(false));
       }
-    } catch (errors) {
-      if (errors.response.data.status == 400) {
-        localStorage.setItem('email', errors.response.data.email)
-        navigate('/verification')
-      }
-      Error(errors.response.data.error)
-      dispatch(setError(errors.response.data.error));
-    } finally {
-      setIsSubmitting(false);
-      dispatch(setLoading(false));
+    } else{
+      Error('Something went wrong! Check your internet')
     }
   };
 
