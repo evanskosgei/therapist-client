@@ -68,21 +68,21 @@ const NavBar = ({ communityCount = 5 }) => {
                     <div className="flex justify-center">
                         <ul className="flex flex-wrap justify-center space-x-2 sm:space-x-4 md:space-x-8 text-sm sm:text-md font-medium">
                             <li>
-                                <a href="/home" className="text-gray-600 hover:text-green-600 hover:underline" aria-current="page">Home</a>
+                                <Link to="/home" className="text-gray-600 hover:text-green-600 hover:underline" aria-current="page">Home</Link>
                             </li>
                             <li>
-                                <a href="/home/session" className="text-gray-600 hover:text-[#72BF78] hover:underline">Sessions</a>
+                                <Link to="/home/session" className="text-gray-600 hover:text-[#72BF78] hover:underline">Sessions</Link>
                             </li>
                             <li>
-                                <a href="#" className="text-gray-600 hover:text-[#72BF78] hover:underline">Buy Article</a>
+                                <Link to="#" className="text-gray-600 hover:text-[#72BF78] hover:underline">Buy Article</Link>
                             </li>
                             <li className="relative">
-                                <a href="/home/communities" className="text-gray-600 hover:text-[#72BF78] hover:underline">
+                                <Link to="/home/communities" className="text-gray-600 hover:text-[#72BF78] hover:underline">
                                     Communities
                                     <span className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 bg-[#72BF78] text-white text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
                                         {communityCount}
                                     </span>
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

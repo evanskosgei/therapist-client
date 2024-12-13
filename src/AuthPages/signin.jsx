@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import EndPoints from '../Api/endPoints';
 import { Success, Error } from '../components/toasts';
 import { saveToken } from '../utils/helpers';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser, setToken, setLoading, setError } from '../redux/AuthReducer';
 
@@ -134,7 +134,7 @@ const SignIn = () => {
           </form>
 
           <p className="mt-8 text-sm text-gray-600 text-center">
-            Don&apos;t have an account? <a href="/signup" className="text-[#72BF78] hover:underline">Sign up</a>
+            Don&apos;t have an account? <Link to="/signup" className="text-[#72BF78] hover:underline">Sign up</Link>
           </p>
         </div>
       </div>
