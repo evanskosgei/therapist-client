@@ -5,16 +5,35 @@ import { Error } from '../../components/toasts'
 import EndPoints from '../../Api/endPoints';
 import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
-import { CTimePicker, CDatePicker } from '@coreui/react-pro';
-import '@coreui/coreui-pro/dist/css/coreui.min.css'
-// import '../../App.css'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import TimePicker from 'react-time-picker-input';
+import '../../App.css';
+import { useForm } from "react-hook-form"
 
 const CheckoutSession = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [therapist, setTherapist] = useState('');
     const [pmethods, setPMethods] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
+    const [startDate, setStartDate] = useState(new Date());
+    const [value, onChange] = useState('10.00');
     const { id } = useParams()
+    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+        defaultValues: {
+            therapist_id:id,
+            session_topic: '',
+            session_date: '',
+            paymentMethod: '',
+            phoneNumber: '',
+            cardNumber: '',
+            expiryDate: '',
+            cvv: '',
+            cardholderName: '',
+            // sessionTime: '10:00',
+            // sessionDate: new Date()
+        }
+    });
 
     const fetch_therapist_data = async (id) => {
         try {
@@ -50,8 +69,10 @@ const CheckoutSession = () => {
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value);
     };
-    const [startDate, setStartDate] = useState(null);
-    const [time, setTime] = useState('09:00');
+
+    const onSubmit = (values) => {
+        console.log(values)
+    }
 
     if (isLoading) {
         return (
@@ -59,14 +80,6 @@ const CheckoutSession = () => {
                 <LoaderCircle className="animate-spin h-10 w-10" />
             </div>
         );
-    }
-
-    const customTheme = {
-        popup: {
-            root: {
-                inner: "inline-block rounded-lg bg-white p-4 shadow-lg dark:bg-gray-800"
-            }
-        }
     }
 
     const renderPaymentDetails = () => {
@@ -80,13 +93,22 @@ const CheckoutSession = () => {
                                 +254
                             </span>
                             <input
+                                {...register("phoneNumber", {
+                                    required: "Phone number is required",
+                                    pattern: {
+                                        value: /^[0-9]{9}$/,
+                                        message: "Please enter a valid phone number"
+                                    }
+                                })}
                                 type="tel"
-                                pattern="[0-9]{9}"
                                 placeholder="712345678"
                                 maxLength="9"
                                 className="w-full p-2 border border-gray-300 focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
                         </div>
+                        {errors.phoneNumber && (
+                            <p className="text-red-500 text-xs">{errors.phoneNumber.message}</p>
+                        )}
                         <p className="text-xs text-gray-500">Enter your M-Pesa registered phone number</p>
                     </div>
                 );
@@ -97,42 +119,78 @@ const CheckoutSession = () => {
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-gray-700">Card Number</label>
                             <input
+                                {...register("cardNumber", {
+                                    required: "Card number is required",
+                                    pattern: {
+                                        value: /^[0-9]{16}$/,
+                                        message: "Please enter a valid card number"
+                                    }
+                                })}
                                 type="text"
                                 placeholder="1234 5678 9012 3456"
                                 maxLength="19"
                                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
+                            {errors.cardNumber && (
+                                <p className="text-red-500 text-xs">{errors.cardNumber.message}</p>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Expiry Date</label>
                                 <input
+                                    {...register("expiryDate", {
+                                        required: "Expiry date is required",
+                                        pattern: {
+                                            value: /^(0[1-9]|1[0-2])\/([0-9]{2})$/,
+                                            message: "Please enter a valid expiry date (MM/YY)"
+                                        }
+                                    })}
                                     type="text"
                                     placeholder="MM/YY"
                                     maxLength="5"
-                                    className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
+                                {errors.expiryDate && (
+                                    <p className="text-red-500 text-xs">{errors.expiryDate.message}</p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">CVV</label>
                                 <input
+                                    {...register("cvv", {
+                                        required: "CVV is required",
+                                        pattern: {
+                                            value: /^[0-9]{3,4}$/,
+                                            message: "Please enter a valid CVV"
+                                        }
+                                    })}
                                     type="text"
                                     placeholder="123"
                                     maxLength="3"
                                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
+                                {errors.cvv && (
+                                    <p className="text-red-500 text-xs">{errors.cvv.message}</p>
+                                )}
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-gray-700">Cardholder Name</label>
                             <input
+                                {...register("cardholderName", {
+                                    required: "Cardholder name is required"
+                                })}
                                 type="text"
                                 placeholder="John Doe"
                                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                             />
+                            {errors.cardholderName && (
+                                <p className="text-red-500 text-xs">{errors.cardholderName.message}</p>
+                            )}
                         </div>
                     </div>
                 );
@@ -218,64 +276,94 @@ const CheckoutSession = () => {
                     {/* Session Booking Form */}
                     <div className="border-t pt-8">
                         <h3 className="text-2xl font-bold mb-6">Request For A Session</h3>
-                        <form className="space-y-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Session Topic</label>
                                 <input
+                                    {...register("session_topic", {
+                                        required: "Session topic is required"
+                                    })}
                                     type="text"
-                                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                 />
+                                {errors.session_topic && (
+                                    <p className="text-red-500 text-xs">{errors.session_topic.message}</p>
+                                )}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
+                                {/* <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Day of the Week</label>
-                                    <select 
-                                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]">
+                                    <select
+                                        {...register("dayOfWeek", {
+                                            required: "Please select a day"
+                                        })}
+                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]">
                                         <option value="">Select Day</option>
-                                        {dayOfWeek.map((dayOfWeek, index) => (
-                                            <option key={index} value={dayOfWeek.day}>{dayOfWeek.day}</option>
+                                        {dayOfWeek.map((day, index) => (
+                                            <option key={index} value={day.day}>{day.day}</option>
                                         ))}
                                     </select>
-                                </div>
+                                    {errors.dayOfWeek && (
+                                        <p className="text-red-500 text-xs">{errors.dayOfWeek.message}</p>
+                                    )}
+                                </div> */}
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                     <select
-                                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                        {...register("paymentMethod", {
+                                            required: "Please select a payment method"
+                                        })}
+                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
                                         onChange={handlePaymentMethodChange}
                                         value={paymentMethod}>
                                         <option value="">Select Payment Method</option>
                                         {pmethods.map((method, index) => (
-                                            <option key={index} value={(method.method_name).toLowerCase()}>{method.method_name}</option>
+                                            <option key={index} value={(method.method_name).toLowerCase()}>
+                                                {method.method_name}
+                                            </option>
                                         ))}
                                     </select>
+                                    {errors.paymentMethod && (
+                                        <p className="text-red-500 text-xs">{errors.paymentMethod.message}</p>
+                                    )}
                                 </div>
-
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Time for the Session</label>
-                                    <CTimePicker locale="en-US" seconds={false}
-                                        className=" w-full bg-gray-50 border border-gray-300 rounded-lg"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Date for the Session</label>
-                                    <CDatePicker locale="en-US"
-                                       className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
-                                    />
-                                </div>
-                                {/* <div className="space-y-2">
-                                    <label className="date-picker-label">Date for the Session</label>
+                                <div className="form-group">
+                                    <label className="form-label">Date for the Session</label>
                                     <DatePicker
-                                        onChange={(date) => setStartDate(date)}
                                         selected={startDate}
-                                        className="date-picker"
-                                        placeholderText="Select date"
-                                        dateFormat="MM/dd/yyyy"
+                                        onChange={(date) => {
+                                            setStartDate(date);
+                                            setValue('session_date', date);
+                                        }}
+                                        className="date-picker w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                        minDate={new Date()}
                                     />
-                                </div> */}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">Start Time for the Session</label>
+                                    <TimePicker
+                                        onChange={(newValue) => {
+                                            onChange(newValue);
+                                            setValue('session_start_time', newValue);
+                                        }}
+                                        value={value}
+                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">End Time for the Session</label>
+                                    <TimePicker
+                                        onChange={(newValue) => {
+                                            onChange(newValue);
+                                            setValue('session_end_time', newValue);
+                                        }}
+                                        value={value}
+                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
+                                    />
+                                </div>
+                                
                             </div>
-
-
                             {renderPaymentDetails()}
 
                             <button
@@ -291,5 +379,4 @@ const CheckoutSession = () => {
         </div>
     );
 };
-
 export default CheckoutSession;

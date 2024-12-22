@@ -73,7 +73,7 @@ const SignIn = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
-                Email
+                Email Address
               </label>
               <div className="relative">
                 <input
@@ -141,5 +141,4 @@ const SignIn = () => {
     </div>
   );
 };
-
 export default SignIn;
