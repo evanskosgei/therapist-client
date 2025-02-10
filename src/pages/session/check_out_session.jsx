@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { dayOfWeek } from '../../utils/days';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import TimePicker from 'react-time-picker-input';
+import CustomTimePicker from '../../components/custom';
 import '../../App.css';
 import { useForm } from "react-hook-form"
 
@@ -17,11 +17,11 @@ const CheckoutSession = () => {
     const [pmethods, setPMethods] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
-    const [value, onChange] = useState('10.00');
+    const [value, onChange] = useState('');
     const { id } = useParams()
     const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         defaultValues: {
-            therapist_id:id,
+            therapist_id: id,
             session_topic: '',
             session_date: '',
             paymentMethod: '',
@@ -30,8 +30,7 @@ const CheckoutSession = () => {
             expiryDate: '',
             cvv: '',
             cardholderName: '',
-            // sessionTime: '10:00',
-            // sessionDate: new Date()
+            value: '',
         }
     });
 
@@ -342,27 +341,13 @@ const CheckoutSession = () => {
 
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">Start Time for the Session</label>
-                                    <TimePicker
-                                        onChange={(newValue) => {
-                                            onChange(newValue);
-                                            setValue('session_start_time', newValue);
-                                        }}
-                                        value={value}
-                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
-                                    />
+                                    <CustomTimePicker />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700">End Time for the Session</label>
-                                    <TimePicker
-                                        onChange={(newValue) => {
-                                            onChange(newValue);
-                                            setValue('session_end_time', newValue);
-                                        }}
-                                        value={value}
-                                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#72BF78] focus:border-[#72BF78]"
-                                    />
+                                    <CustomTimePicker />
                                 </div>
-                                
+
                             </div>
                             {renderPaymentDetails()}
 
